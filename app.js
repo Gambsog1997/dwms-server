@@ -1,9 +1,10 @@
 const express = require('express')
+require('dotenv').config
 const dbSchema = require('./Customer/RegCrud/schema')
 const regAdmin = require('./Admin/RegCrud/regAdmin')
 const custReg = require('./Customer/RegCrud/custReg')
 const contract = require('./Admin/History/contract')
-const customerAuntentication = require('./Admin/Authenticate/login')
+// const customerAuntentication = require('./Admin/Authenticate/login')
 const location = require('./Admin/crud/location')
 const payment = require('./Admin/crud/payment')
 const occupation = require('./Admin/crud/occupation')
@@ -15,7 +16,7 @@ const domWorkerCrud = require('./Admin/crud/domWorkers')
 const customerAuthenticate = require('./Admin/Authenticate/login')
 
 const app = express()
-const port = process.env.PORT || 6500
+const port = process.env.PORT
 
 app.use(cors())
 app.use('/', regAdmin)

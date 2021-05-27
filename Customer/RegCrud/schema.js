@@ -1,6 +1,7 @@
 const Sequelize = require("sequelize");
 const mysql = require("mysql");
 const configDb = require("../../config");
+require('dotenv').config()
 
 //Establish connection to the database
 const initialize = async (host, username, password, database) => {
@@ -22,7 +23,7 @@ const initialize = async (host, username, password, database) => {
 };
 
 //create database if it doesn't exist
-initialize(configDb.host, configDb.user, configDb.password, configDb.database);
+initialize(process.env.DB_HOST,process.env.DB_USER,process.env.DB_PASSWORD,process.env.DB);
 
 //creating models by sequelize
 const sequelize = new Sequelize("DomesticWorkers", "root", "melixian01", {

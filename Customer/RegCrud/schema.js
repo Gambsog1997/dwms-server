@@ -1,6 +1,5 @@
 const Sequelize = require("sequelize");
 const mysql = require("mysql");
-const configDb = require("../../config");
 require('dotenv').config()
 
 //Establish connection to the database

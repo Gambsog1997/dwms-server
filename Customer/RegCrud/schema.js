@@ -25,9 +25,9 @@ const initialize = async (host, username, password, database) => {
 initialize(process.env.DB_HOST,process.env.DB_USER,process.env.DB_PASSWORD,process.env.DB);
 
 //creating models by sequelize
-const sequelize = new Sequelize("DomesticWorkers", "root", "melixian01", {
-  host: "localhost",
-  dialect: "mysql",
+const sequelize = new Sequelize(process.env.DB,process.env.DB_USER ,process.env.DB_PASSWORD , {
+  host: process.env.DB_HOST,
+  dialect: process.env.DB_DIALECT,
 });
 
 //Adding columns for query interface

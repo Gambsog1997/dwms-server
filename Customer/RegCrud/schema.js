@@ -455,4 +455,4 @@ const db = {
 
 module.exports = db;
 
-//sequelize.sync();
+sequelize.sync();

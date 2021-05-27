@@ -1,8 +1,7 @@
 {
-  "name": "crash-course",
+  "name": "dwms",
   "version": "1.0.0",
-  "description": "For crash course",
-  "main": "http.js",
+  "description": "Server",
   "scripts": {
     "start": "node http",
     "dev": "nodemon http"

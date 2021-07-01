@@ -19,9 +19,9 @@ customerAuthenticate.post("/customer/authentication", (req, res) => {
         .then((results) => {
             if (results) {
                 count = count + 1
-                const accessToken = jwt.sign(JSON.stringify(results), process.env.TOKEN_SECRET)
+                const accessToken = jwt.sign(JSON.stringify(results), 'gambs')
                 const result = { ...results, accessToken }
-                res.cookie('count', count).json(result).status(200)
+                res.json(result).status(200)
                 console.log(result);
             } else {
                 res.json({ msg: "Not found" }).status(200)
@@ -29,7 +29,7 @@ customerAuthenticate.post("/customer/authentication", (req, res) => {
         })
         .catch((err) => {
             console.log(err);
-            res.status(500).json({ msg: "internal server err" });
+            res.status(500).json(err);
         });
 });
 

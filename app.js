@@ -16,7 +16,7 @@ const domWorkerCrud = require('./Admin/crud/domWorkers')
 const customerAuthenticate = require('./Admin/Authenticate/login')
 
 const app = express()
-const port = process.env.PORT || 6500
+const port = process.env.PORT 
 
 app.use(cors())
 app.use('/', regAdmin)

@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "Server",
   "scripts": {
-    "start": "node server.js",
+    "start": "nodemon app.js",
     "dev": "node app"
   },
   "author": "Gambs_og",

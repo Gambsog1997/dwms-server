@@ -22,16 +22,19 @@ const initialize = async (host, username, password, database) => {
 };
 
 //create database if it doesn't exist
-initialize(process.env.DB_HOST,process.env.DB_USER,process.env.DB_PASSWORD,process.env.DB);
+initialize(process.env.DB_HOST, process.env.DB_USER, process.env.DB_PASSWORD, process.env.DB);
 
 //creating models by sequelize
-const sequelize = new Sequelize(process.env.DB,process.env.DB_USER ,process.env.DB_PASSWORD , {
+const sequelize = new Sequelize(process.env.DB, process.env.DB_USER, process.env.DB_PASSWORD, {
   host: process.env.DB_HOST,
   dialect: process.env.DB_DIALECT,
 });
 
 //Adding columns for query interface
 //const queryInterface = sequelize.getQueryInterface();
+
+//customer location table
+const queryInterface = sequelize.getQueryInterface();
 
 //customer location table
 const Location = sequelize.define(
@@ -67,6 +70,7 @@ const Occupation = sequelize.define("occupation", {
     type: Sequelize.INTEGER,
     primaryKey: true,
     allowNull: false,
+    autoIncrement: true
   },
   occupation: {
     type: Sequelize.STRING,
@@ -123,6 +127,7 @@ const DomesticWorkers = sequelize.define("Domesticworkers", {
   phone: {
     type: Sequelize.STRING,
     allowNull: false,
+    primaryKey: true
   },
 });
 
@@ -144,6 +149,12 @@ DomesticWorkers.belongsTo(Location, {
 
 //referee table
 const Referee = sequelize.define("referee", {
+  id: {
+    type: Sequelize.INTEGER,
+    primaryKey: true,
+    allowNull: false,
+    autoIncrement: true
+  },
   firstname: {
     type: Sequelize.STRING,
     allowNull: false,
@@ -191,6 +202,7 @@ const Referee = sequelize.define("referee", {
   email: {
     type: Sequelize.STRING,
     allowNull: false,
+    primaryKey: true,
     validate: {
       isEmail: true
     }
@@ -220,6 +232,11 @@ Referee.belongsTo(Occupation, {
 
 //Customer table
 const Customer = sequelize.define("customer", {
+  id: {
+    type: Sequelize.INTEGER,
+    primaryKey: true,
+    autoIncrement: true
+  },
   firstname: {
     type: Sequelize.STRING,
     allowNull: false,
@@ -267,6 +284,7 @@ const Customer = sequelize.define("customer", {
   email: {
     type: Sequelize.STRING,
     allowNull: false,
+    primaryKey: true,
     validate: {
       isEmail: true
     }
@@ -274,6 +292,7 @@ const Customer = sequelize.define("customer", {
   role: {
     type: Sequelize.STRING,
     allowNull: false,
+    defaultValue: 'customer'
   },
 });
 Customer.hasMany(DomesticWorkers, {
@@ -354,13 +373,10 @@ const Payment = sequelize.define("payments", {
     type: Sequelize.INTEGER,
     allowNull: false,
   },
-  timeStamp: {
-    type: Sequelize.DATE,
-    allowNull: false,
-  },
   status: {
     type: Sequelize.STRING,
     allowNull: false,
+    defaultValue: "pending",
     validate: {
       checkStatus(value) {
         let state = ["pending", "paid"];
@@ -382,10 +398,10 @@ Payment.belongsTo(Customer, {
 
 //problem Report
 const ProblemReports = sequelize.define("problemReport", {
-  timeCreated: {
-    type: Sequelize.DATE,
-    allowNull: false,
-  },
+  // timeCreated: {
+  //   type: Sequelize.DATE,
+  //   allowNull: false,
+  // },
   category: {
     type: Sequelize.STRING,
     allowNull: false,
@@ -423,20 +439,33 @@ ProblemReports.belongsTo(Customer, {
   allowNull: false
 })
 
+DomesticWorkers.hasMany(ProblemReports, {
+  allowNull: false
+})
+ProblemReports.belongsTo(DomesticWorkers, {
+  allowNull: false
+})
 
 //sequelize.close()
 
-/*queryInterface
-  .addColumn("Domesticworkers", "homeLocation", {
-    type: Sequelize.STRING,
-    allowNull: false,
-  })
-  .then((result) => {
-    console.log(result);
-  })
-  .catch((err) => {
-    console.log(err);
-  });*/
+// queryInterface
+//   .addColumn("payments", "domId", {
+//     type: Sequelize.INTEGER,
+//     allowNull: false,
+//   })
+//   .then((result) => {
+//     console.log(result);
+//   })
+//   .catch((err) => {
+//     console.log(err);
+//   });
+
+DomesticWorkers.hasMany(Payment, {
+  allowNull: false
+})
+Payment.belongsTo(DomesticWorkers, {
+  allowNull: false
+})
 
 const db = {
   sqlize: sequelize,
@@ -454,4 +483,4 @@ const db = {
 
 module.exports = db;
 
-sequelize.sync();
+// sequelize.sync();

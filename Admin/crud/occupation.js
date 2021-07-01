@@ -23,33 +23,43 @@ occupation.get("/occupation/list", (req, res) => {
         res.status(404).json({ error: err });
       });
   }
- if(req.query.id) {
-    dbSchema.occupation
-      .findOne({
-        where: {
-          id: req.query.id,
-        },
-      })
-      .then((result) => {
-        res.status(200).json(result);
-      })
-      .catch((err) => {
-        res.status(404).json({ msg: "Not found" });
-      });
-  }
-
-	 if(req.query.occupation) {
-    dbSchema.sqlize.query(
-	`select * from occupations where occupation like '${req.query.occupation}%'`)
-      .then((result) => {
-        res.status(200).json(result);
-      })
-      .catch((err) => {
-        res.status(404).json({ msg: "Not found" });
-      });
+  else {
+    if (req.query.occupation) {
+      dbSchema.occupation
+        .findOne({
+          where: {
+            occupation: {
+              [dbSchema.Sequelize.Op.like]: `${req.query.occupation}%`
+            },
+          },
+        })
+        .then((result) => {
+          res.status(200).json(result);
+        })
+        .catch((err) => {
+          res.status(404).json({ msg: "Not found" });
+        });
+    }
+    if (req.query.id) {
+      dbSchema.occupation
+        .findOne({
+          where: {
+            id: `${req.query.id}`
+            ,
+          },
+        })
+        .then((result) => {
+          res.status(200).json(result);
+        })
+        .catch((err) => {
+          res.status(404).json({ msg: "Not found" });
+        });
+    }
   }
 
 });
+//get-specific
+
 //updating the table, should be put
 occupation.put("/occupation/update", (req, res) => {
   if (Object.keys(req.query).length === 0) {

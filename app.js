@@ -1,5 +1,5 @@
 const express = require('express')
-require('dotenv').config
+// const crypto = require('crypto')
 const dbSchema = require('./Customer/RegCrud/schema')
 const regAdmin = require('./Admin/RegCrud/regAdmin')
 const custReg = require('./Customer/RegCrud/custReg')
@@ -16,7 +16,7 @@ const domWorkerCrud = require('./Admin/crud/domWorkers')
 const customerAuthenticate = require('./Admin/Authenticate/login')
 
 const app = express()
-const port = process.env.PORT
+const port = process.env.PORT || 6500
 
 app.use(cors())
 app.use('/', regAdmin)
@@ -32,20 +32,21 @@ app.use('/customer', payment)
 //for both
 app.use('/history', contract)
 
-dbSchema.sqlize
-    .query(
-        "SET GLOBAL sql_mode=(SELECT REPLACE(@@sql_mode,'ONLY_FULL_GROUP_BY',''))"
-    )
-    .then(([results, metadata]) => {
-        console.log(results);
-    })
-    .catch((err) => {
-        console.log(err);
-    });
+// dbSchema.sqlize
+//     .query(
+//         "SET GLOBAL sql_mode=(SELECT REPLACE(@@sql_mode,'ONLY_FULL_GROUP_BY',''))"
+//     )
+//     .then(([results, metadata]) => {
+//         console.log(results);
+//     })
+//     .catch((err) => {
+//         console.log(err);
+//     });
 
 app.listen(port, (err) => {
     if (err) {
         app.response.status(500).json({ message: { err } })
     }
-    console.log(`Listening at port ${port}`);
+    // crypto.randomBytes(64).toString('base64')
+    console.log(`Listening at port ${port}`,);
 })

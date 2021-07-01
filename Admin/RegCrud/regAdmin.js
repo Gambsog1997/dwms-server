@@ -59,7 +59,7 @@ reg_router.post('/registration/domestic-worker', (req, res) => {
 
 
 reg_router.post('/registration/customer', (req, res) => {
-    const { firstname, middlename, lastname, gender, birthDate, wardId, occupation, domId, password, phone, email } = req.body;
+    const { firstname, middlename, lastname,role, gender, birthdate, ward, occupationId, DomesticworkerDomId, password, phone, email } = req.body;
     try {
         db.customer.create(
             {
@@ -68,13 +68,15 @@ reg_router.post('/registration/customer', (req, res) => {
                 middlename: middlename,
                 lastname: lastname,
                 gender: gender,
-                birthdate: birthDate,
-                locationId: wardId,
-                occupation: occupation,
-                domId: domId,
+                birthdate: birthdate,
+                locationId: ward,
+                occupationId: occupationId,
+                DomesticworkerDomId: DomesticworkerDomId,
                 password: password,
                 phone: phone,
-                email: email
+                email: email,
+                role:role,
+                
             }
         ).then((results) => {
             console.log(res)
@@ -91,7 +93,7 @@ reg_router.post('/registration/customer', (req, res) => {
 );
 
 reg_router.post('/registration/referee', (req, res) => {
-    const {firstname, middlename, lastname, gender, birthdate, ward, occupationId,password, phone, email,DomesticworkerDomId} = req.body;
+    const { firstname, middlename, lastname, gender, birthdate, ward, occupationId, password, phone, email, DomesticworkerDomId, role } = req.body;
 
     try {
         db.referee.create(
@@ -102,12 +104,12 @@ reg_router.post('/registration/referee', (req, res) => {
                 lastname: lastname,
                 gender: gender,
                 birthdate: birthdate,
-                locationId: ward,
                 occupationId: occupationId,
+                DomesticworkerDomId: DomesticworkerDomId,
                 password: password,
                 phone: phone,
                 email: email,
-		DomesticworkerDomId:DomesticworkerDomId
+                locationId:ward
             }
         ).then((results) => {
             console.log(res)
@@ -142,4 +144,3 @@ reg_router.post('/registration/occupation', (req, res) => {
     }
 })
 module.exports = reg_router
-

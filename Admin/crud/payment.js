@@ -11,37 +11,34 @@ app.post("/payment/create-payment", (req, res) => {
   if (!req.body) {
     throw new Error("bad request");
   } else {
-    const payment = new Payment(15000, "000000000001", "For the last month");
+    const payment = new Payment(15000, "000000000001", "For the month");
 
     payment
       .c2b()
       .then((output_TransactionID) => {
         const {
           date_Issued,
-          expiry_date,
-          Dom_Id,
           Cust_Id,
-          timestamp
+          domId
         } = req.body;
+        // console.log(output_TransactionID)
 
         dbSchema.payment
           .create({
             paymentRef: output_TransactionID,
-            amount:payment.amount,
-            timeStamp:timestamp,
+            amount: payment.amount,
             startDate: date_Issued,
-            endDate: expiry_date,
-            custId: Cust_Id,
-            domId: Dom_Id,
-            status:"paid"
+            customerId: Cust_Id,
+            status: "paid",
+            DomesticworkerDomId: domId
           })
           .then((results) => {
-            console.log(results);
-            res.status(201).json({ msg: results });
+            // console.log(results);
+            res.status(201).json(results);
           })
           .catch((err) => {
             console.log(err);
-            res.status(409).json({ msg: err });
+            res.status(409).json(output_TransactionID);
           });
       })
       .catch((err) => {

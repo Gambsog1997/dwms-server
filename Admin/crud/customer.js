@@ -10,10 +10,14 @@ customer.get("/customer/list", (req, res) => {
   if (Object.keys(req.query).length === 0) {
     dbSchema.customer
       .findAll({
-        includes: [
+        include: [
           {
             model: dbSchema.location,
-            as: "Places",
+            // as: "Places",
+          },
+          {
+            model: dbSchema.domWorkerHistory,
+            // as: "history",
           },
         ],
       })
@@ -29,6 +33,10 @@ customer.get("/customer/list", (req, res) => {
       .findOne({
         where: {
           id: req.query.id,
+        },
+        include: {
+          model: dbSchema.domWorkerHistory,
+          // as: "history",
         },
       })
       .then((result) => {
@@ -46,9 +54,7 @@ customer.get("/customer/list", (req, res) => {
 
 customer.get("/customer/get-count", (req, res) => {
   dbSchema.sqlize
-    .query(
-      "SELECT count(customers.id) as Customers FROM customers"
-    )
+    .query("SELECT count(customers.id) as Customers FROM customers")
     .then(([results, metadata]) => {
       console.log(results);
       res.status(200).json(results);
@@ -64,7 +70,20 @@ customer.put("/customer/update", (req, res) => {
   if (Object.keys(req.query).length === 0) {
     res.status(400).json("Bad request");
   }
-  const { firstname, middlename, lastname, location } = req.body;
+  const {
+    firstname,
+    middlename,
+    lastname,
+    locationId,
+    gender,
+    password,
+    phone,
+    email,
+    birthdate,
+    DomesticworkerDomId,
+    occupationId,
+    role,
+  } = req.body;
 
   dbSchema.customer
     .update(
@@ -72,7 +91,15 @@ customer.put("/customer/update", (req, res) => {
         firstname: firstname,
         middlename: middlename,
         lastname: lastname,
-        location: location,
+        gender: gender,
+        birthdate: birthdate,
+        password: password,
+        phone: phone,
+        email: email,
+        DomesticworkerDomId: DomesticworkerDomId,
+        ward: locationId,
+        occupationId: occupationId,
+        role: role
       },
       {
         where: {
@@ -82,7 +109,7 @@ customer.put("/customer/update", (req, res) => {
     )
     .then((data) => {
       console.log(data);
-      res.status(200).json({ msg: data });
+      res.status(200).json(data);
     })
     .catch((err) => {
       console.log(err);
@@ -112,6 +139,28 @@ customer.post("/customer/delete", (req, res) => {
   } else {
     res.status(400).json({ msg: "Bad request" });
   }
+});
+
+//updating the table
+customer.post("/dom-history/create", (req, res) => {
+  if (Object.keys(req.body).length === 0) {
+    res.status(400).json("Bad request");
+  }
+  const { customerId, DomesticworkerDomId } = req.body;
+
+  dbSchema.domWorkerHistory
+    .create({
+      customerId: customerId,
+      DomesticworkerDomId: DomesticworkerDomId,
+    })
+    .then((data) => {
+      console.log(data);
+      res.status(200).json(data);
+    })
+    .catch((err) => {
+      console.log(err);
+      res.status(400).json({ msg: err });
+    });
 });
 
 module.exports = customer;

@@ -12,6 +12,7 @@ report.get("/report/get", (req, res) => {
                 attributes: {
                     exclude: [],
                 },
+                include: { model: dbSchema.customer }
             })
             .then((result) => {
                 console.log(result);
@@ -55,48 +56,46 @@ report.get("/report/get-count", (req, res) => {
 
 report.get("/report/get-all-count", (req, res) => {
     dbSchema.sqlize
-      .query(
-        "SELECT count(problemReports.id) as Reports FROM problemReports"
-      )
-      .then(([results, metadata]) => {
-        console.log(results);
-        res.status(200).json(results);
-      })
-      .catch((err) => {
-        console.log(err);
-        res.status(500).json({ msg: "internal server err" });
-      });
-  });
-
-//updating the table, should be put
-report.post("/report/update", (req, res) => {
-    if (Object.keys(req.query).length === 0) {
-        res.status(400).json("Bad request");
-    }
-
-    const { category, level, report } = req.body;
-
-    dbSchema.report
-        .update(
-            {
-                category: category,
-                level: level,
-                report: report
-            },
-            {
-                where: {
-                    id: req.query.id,
-                },
-            }
+        .query(
+            "SELECT count(problemReports.id) as Reports FROM problemReports"
         )
-        .then((data) => {
-            console.log(data);
-            res.status(200).json({ msg: data });
+        .then(([results, metadata]) => {
+            console.log(results);
+            res.status(200).json(results);
         })
         .catch((err) => {
             console.log(err);
-            res.status(200).json({ msg: err });
+            res.status(500).json({ msg: "internal server err" });
         });
+});
+
+//updating the table, should be put
+report.post("/report/create-report", (req, res) => {
+    if (Object.keys(req.body).length === 0) {
+        res.status(400).json("Bad request");
+    }
+    else {
+        const { category, level, report, customerId, DomesticworkersDomId } = req.body;
+
+        dbSchema.report
+            .create(
+                {
+                    category: category,
+                    level: level,
+                    report: report,
+                    customerId: customerId,
+                    DomesticworkerDomId: DomesticworkersDomId
+                },
+            )
+            .then((data) => {
+                console.log(data);
+                res.status(200).json(data);
+            })
+            .catch((err) => {
+                console.log(err);
+                res.status(200).json({ msg: err });
+            });
+    }
 });
 
 //delete the report

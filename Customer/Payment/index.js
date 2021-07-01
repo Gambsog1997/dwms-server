@@ -4,6 +4,7 @@ const dataSample = require("./inputs");
 const axios = require("axios");
 const config = require("./config");
 const { get } = require("http");
+const { v4: uuidv4 } = require('uuid');
 
 class Payment {
   constructor(amount, custISDN, description) {
@@ -37,7 +38,7 @@ class Payment {
           Authorization: "Bearer " + this.encryptKey(apiKey),
         },
       });
-      console.log(response.data);
+      // console.log(response.data);
       return response.data;
     } catch (error) {
       console.log(error);
@@ -61,22 +62,22 @@ class Payment {
               this.amount,
               this.custISDN,
               "M19898Z",
-              "1e9b674j1dug8af09498a896cxgfxf5",
+              `1e9b674j1dug8af0949rs896c${Math.random().toString(36).substring(7)}`,
               this.description
             ).c2bDataSample(),
           });
-          console.log(response.data);
+          console.log(response);
           return response.data.output_TransactionID;
         } catch (error) {
           console.log(error);
         }
       })
-      .then((results) => {
-        console.log("key acquired", results);
-      })
-      .catch(() => {
-        console.log("Failed to acquire the key");
-      });
+      // .then((results) => {
+      //   console.log("key acquired", results);
+      // })
+      // .catch(() => {
+      //   console.log("Failed to acquire the key");
+      // });
   }
 
   //get query the status of transaction
@@ -109,7 +110,5 @@ class Payment {
       });
   }
 }
-
-const payment = new Payment(399000, "000000000002", "For shoes");
 
 module.exports = Payment;

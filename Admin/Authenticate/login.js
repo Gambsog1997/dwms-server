@@ -3,6 +3,7 @@ const dotenv = require('dotenv')
 const cookie = require('cookie-parser')
 const jwt = require("jsonwebtoken");
 const dbSchema = require("../../Customer/RegCrud/schema");
+const config = require("../../../dashboard-master/src/config");
 const customerAuthenticate = express.Router();
 
 var count = 0
@@ -19,7 +20,7 @@ customerAuthenticate.post("/customer/authentication", (req, res) => {
         .then((results) => {
             if (results) {
                 count = count + 1
-                const accessToken = jwt.sign(JSON.stringify(results), 'gambs')
+                const accessToken = jwt.sign(JSON.stringify(results), config.token)
                 const result = { ...results, accessToken }
                 res.json(result).status(200)
                 console.log(result);

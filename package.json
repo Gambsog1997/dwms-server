@@ -3,8 +3,8 @@
   "version": "1.0.0",
   "description": "Server",
   "scripts": {
-    "start": "nodemon app.js",
-    "dev": "node app"
+    "start": "node index.js",
+    "dev": "nodemon app"
   },
   "author": "Gambs_og",
   "license": "ISC",

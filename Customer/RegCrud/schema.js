@@ -394,7 +394,12 @@ Customer.hasMany(Payment, {
 Payment.belongsTo(Customer, {
   allowNull: false
 })
-
+DomesticWorkers.hasMany(Payment, {
+  allowNull: false
+})
+Payment.belongsTo(DomesticWorkers, {
+  allowNull: false
+})
 
 //problem Report
 const ProblemReports = sequelize.define("problemReport", {
@@ -483,4 +488,4 @@ const db = {
 
 module.exports = db;
 
-// sequelize.sync();
+sequelize.sync();

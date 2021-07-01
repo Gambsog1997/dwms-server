@@ -10,7 +10,7 @@ const initialize = async (host, username, password, database) => {
     password: password,
     dateString: true,
   });
-  sqlConn.query(`create database if not exists ${database}`, (err, results) => {
+  await sqlConn.query(`create database if not exists ${database}`, (err, results) => {
     if (err) {
       console.log({ err });
       sqlConn.end();

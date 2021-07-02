@@ -7,7 +7,7 @@ location.use(bodyParser.json());
 
 location.get("/location/get", (req, res) => {
   if (Object.keys(req.query).length === 0) {
-    dbSchema.location
+    dbSchema.sqlize
       .query(
         "SELECT * FROM Domesticworkers,locations INNER JOIN locations ON Domesticworkers.locationId = locations.id group by Domesticworkers.locationId"
       )

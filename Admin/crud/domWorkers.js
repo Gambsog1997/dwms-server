@@ -98,10 +98,14 @@ getDomWorkers.put(`/domestic-workers/update`, (req, res) => {
   dbSchema.domWorker
     .update(
       {
-        // firstname: firstname,
-        // middlename: middlename,
-        // lastname: lastname,
+        firstname: req.body.firstname,
+        middlename: req.body.middlename,
+        lastname: req.body.lastname,
         locationId: location,
+        homeLocationId: req.body.homeLocationId,
+        gender: req.body.gender,
+        birthdate: req.body.birthdate,
+        ward: req.body.ward
       },
       {
         where: {
@@ -123,15 +127,15 @@ getDomWorkers.put(`/domestic-workers/update`, (req, res) => {
 getDomWorkers.post("/domestic-workers/delete", (req, res) => {
   if (Object.keys(req.query).length !== 0) {
     dbSchema.domWorker.destroy({
-	where:{
-	domId:req.query.domId
-	}
+      where: {
+        domId: req.query.domId
+      }
     }).then((result) => {
       res.status(200).json({ msg: result })
     }).catch((err) => {
       console.log(err);
       res.status(400).json({ error: err })
-    })   
+    })
   }
 });
 

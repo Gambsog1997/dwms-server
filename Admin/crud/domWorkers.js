@@ -111,11 +111,11 @@ getDomWorkers.put(`/domestic-workers/update`, (req, res) => {
     )
     .then((data) => {
       console.log(data);
-      res.status(200).json({ msg: data });
+      res.status(200).json(data);
     })
     .catch((err) => {
       console.log(err);
-      res.status(200).json({ msg: err });
+      res.status(400).json({ msg: err });
     });
 });
 

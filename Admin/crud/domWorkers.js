@@ -109,7 +109,10 @@ getDomWorkers.put(`/domestic-workers/update`, (req, res) => {
         firstname: firstname,
         middlename: middlename,
         lastname: lastname,
-        locationId: ward
+        locationId: ward,
+        gender: gender,
+        birthdate: birthdate,
+        phone: phone,
       },
       {
         where: {

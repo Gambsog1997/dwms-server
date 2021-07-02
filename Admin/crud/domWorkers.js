@@ -94,25 +94,14 @@ getDomWorkers.get("/domestic-workers/all-workers", (req, res) => {
 
 //updating the table
 getDomWorkers.put(`/domestic-workers/update`, (req, res) => {
-  const { location,{
-    firstname,
-    middlename,
-    lastname,
-    gender,
-    birthdate,
-    phone,
-    ward
-  } = req.body;
+  const { location } = req.body;
   dbSchema.domWorker
     .update(
       {
-        firstname: firstname,
-        middlename: middlename,
-        lastname: lastname,
-        locationId: ward,
-        gender: gender,
-        birthdate: birthdate,
-        phone: phone,
+        // firstname: firstname,
+        // middlename: middlename,
+        // lastname: lastname,
+        locationId: location,
       },
       {
         where: {
@@ -122,11 +111,11 @@ getDomWorkers.put(`/domestic-workers/update`, (req, res) => {
     )
     .then((data) => {
       console.log(data);
-      res.status(200).json(data);
+      res.status(200).json({ msg: data });
     })
     .catch((err) => {
       console.log(err);
-      res.status(400).json({ msg: err });
+      res.status(200).json({ msg: err });
     });
 });
 
@@ -134,15 +123,15 @@ getDomWorkers.put(`/domestic-workers/update`, (req, res) => {
 getDomWorkers.post("/domestic-workers/delete", (req, res) => {
   if (Object.keys(req.query).length !== 0) {
     dbSchema.domWorker.destroy({
-      where: {
-        domId: req.query.domId
-      }
+	where:{
+	domId:req.query.domId
+	}
     }).then((result) => {
       res.status(200).json({ msg: result })
     }).catch((err) => {
       console.log(err);
       res.status(400).json({ error: err })
-    })
+    })   
   }
 });
 

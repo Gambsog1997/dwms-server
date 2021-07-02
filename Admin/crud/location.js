@@ -39,7 +39,7 @@ location.get("/location/get", (req, res) => {
 location.get("/location/get-count", (req, res) => {
   dbSchema.sqlize
     .query(
-      "SELECT locations.district,count(Domesticworkers.locationId) as district_no FROM Domesticworkers INNER JOIN locations ON Domesticworkers.locationId = locations.id group by Domesticworkers.locationId"
+      "SELECT locations.district,count(domesticworkers.locationId) as district_no FROM domesticworkers INNER JOIN locations ON domesticworkers.locationId = locations.id group by domesticworkers.locationId"
     )
     .then(([results, metadata]) => {
       console.log(results);

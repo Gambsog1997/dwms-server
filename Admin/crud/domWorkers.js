@@ -93,15 +93,15 @@ getDomWorkers.get("/domestic-workers/all-workers", (req, res) => {
 });
 
 //updating the table
-getDomWorkers.put("/domestic-workers/update", (req, res) => {
-  const { firstname, middlename, lastname, location } = req.body;
+getDomWorkers.put(`/domestic-workers/update`, (req, res) => {
+  const { location } = req.body;
   dbSchema.domWorker
     .update(
       {
-        firstname: firstname,
-        middlename: middlename,
-        lastname: lastname,
-        location: location,
+        // firstname: firstname,
+        // middlename: middlename,
+        // lastname: lastname,
+        locationId: location,
       },
       {
         where: {

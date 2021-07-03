@@ -51,6 +51,22 @@ location.get("/location/get-count", (req, res) => {
     });
 });
 
+//get the count location
+location.get("/location/get-home-count", (req, res) => {
+  dbSchema.sqlize
+    .query(
+      "SELECT locations.district,count(domesticworkers.homeLocationId) as district_no FROM domesticworkers INNER JOIN locations ON domesticworkers.homeLocationId = locations.id group by domesticworkers.homeLocationId"
+    )
+    .then(([results, metadata]) => {
+      console.log(results);
+      res.status(200).json(results);
+    })
+    .catch((err) => {
+      console.log(err);
+      res.status(500).json({ msg: "internal server err" });
+    });
+});
+
 //get the all district
 /*location.get("/location/get-district", (req, res) => {
   dbSchema.sqlize

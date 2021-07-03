@@ -22,7 +22,7 @@ customerAuthenticate.post("/customer/authentication", (req, res) => {
                 count = count + 1
                 const accessToken = jwt.sign(JSON.stringify(results), process.env.TOKEN_SECRET)
                 const result = { ...results, accessToken }
-                res.json(result).status(200)
+                res.cookie("count", count).json(result).status(200)
                 console.log(result);
             } else {
                 res.json({ msg: "Not found" }).status(200)

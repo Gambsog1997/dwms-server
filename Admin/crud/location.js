@@ -7,33 +7,20 @@ location.use(bodyParser.json());
 
 
 location.get("/location/get-list", (req, res) => {
-  if (Object.keys(req.query).length === 0) {
-    dbSchema.sqlize
-      .query(
-        "SELECT * FROM locations"
-      )
-      .then((result) => {
-        console.log(result);
-        res.status(200).json(result);
-      })
-      .catch((err) => {
-        console.log(err);
-        res.status(404).json({ error: err });
-      });
-  } else {
-    dbSchema.location
-      .findOne({
-        where: {
-          id: req.query.id,
-        },
-      })
-      .then((result) => {
-        res.status(200).json(result);
-      })
-      .catch((err) => {
-        res.status(404).json({ msg: "Not found" });
-      });
-  }
+
+  dbSchema.sqlize
+    .query(
+      "SELECT * FROM locations"
+    )
+    .then((result) => {
+      console.log(result);
+      res.status(200).json(result);
+    })
+    .catch((err) => {
+      console.log(err);
+      res.status(404).json({ error: err });
+    });
+
 });
 
 location.get("/location/get", (req, res) => {

@@ -7,20 +7,20 @@ location.use(bodyParser.json());
 
 
 location.get("/location/get-list", (req, res) => {
-
-  dbSchema.sqlize
-    .query(
-      "SELECT * FROM locations"
-    )
-    .then((result, metadata) => {
-      console.log(result);
-      res.status(200).json(result);
-    })
-    .catch((err) => {
-      console.log(err);
-      res.status(404).json({ error: err });
-    });
-
+  if (Object.keys(req.query).length === 0) {
+    dbSchema.sqlize
+      .query(
+        "SELECT * FROM locations"
+      )
+      .then((result) => {
+        console.log(result);
+        res.status(200).json(result);
+      })
+      .catch((err) => {
+        console.log(err);
+        res.status(404).json({ error: err });
+      });
+  }
 });
 
 location.get("/location/get", (req, res) => {
@@ -74,7 +74,6 @@ location.post("/location/create", (req, res) => {
   if (!req.body) {
     throw new Error("bad request");
   } else {
-    // const payment = new Payment(15000, "000000000001", "For the month");
     const {
       ward,
       district,
@@ -96,7 +95,7 @@ location.post("/location/create", (req, res) => {
         console.log(err);
       });
   }
-}
+
 });
 
 //get the count location

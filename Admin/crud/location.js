@@ -81,7 +81,7 @@ location.post("/location/create", (req, res) => {
     } = req.body;
     // console.log(output_TransactionID)
 
-    dbSchema.payment
+    dbSchema.location
       .create({
         ward: ward,
         district: district,

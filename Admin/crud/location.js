@@ -12,7 +12,7 @@ location.get("/location/get-list", (req, res) => {
     .query(
       "SELECT * FROM locations"
     )
-    .then((result,metadata) => {
+    .then((result, metadata) => {
       console.log(result);
       res.status(200).json(result);
     })
@@ -75,35 +75,28 @@ location.post("/location/create", (req, res) => {
     throw new Error("bad request");
   } else {
     // const payment = new Payment(15000, "000000000001", "For the month");
+    const {
+      ward,
+      district,
+      region
+    } = req.body;
+    // console.log(output_TransactionID)
 
-    payment
-      .c2b()
-      .then((output_TransactionID) => {
-        const {
-          ward,
-          district,
-          region
-        } = req.body;
-        // console.log(output_TransactionID)
-
-        dbSchema.payment
-          .create({
-            ward: ward,
-            district: district,
-            region: region
-          })
-          .then((results) => {
-            // console.log(results);
-            res.status(201).json(results);
-          })
-          .catch((err) => {
-            console.log(err);
-          });
+    dbSchema.payment
+      .create({
+        ward: ward,
+        district: district,
+        region: region
+      })
+      .then((results) => {
+        // console.log(results);
+        res.status(201).json(results);
       })
       .catch((err) => {
-        res.status(500).json({ msg: "Internal server Error" });
+        console.log(err);
       });
   }
+}
 });
 
 //get the count location

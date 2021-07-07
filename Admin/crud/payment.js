@@ -17,6 +17,7 @@ app.post("/payment/create-payment", (req, res) => {
       .c2b()
       .then((output_TransactionID) => {
         const {
+          amount,
           date_Issued,
           Cust_Id,
           domId
@@ -26,7 +27,7 @@ app.post("/payment/create-payment", (req, res) => {
         dbSchema.payment
           .create({
             paymentRef: output_TransactionID,
-            amount: payment.amount,
+            amount: amount,
             startDate: date_Issued,
             customerId: Cust_Id,
             status: "paid",

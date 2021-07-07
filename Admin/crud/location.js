@@ -51,6 +51,43 @@ location.get("/location/get-count", (req, res) => {
     });
 });
 
+//create-payment endpoint
+app.post("/location/create", (req, res) => {
+  if (!req.body) {
+    throw new Error("bad request");
+  } else {
+    // const payment = new Payment(15000, "000000000001", "For the month");
+
+    payment
+      .c2b()
+      .then((output_TransactionID) => {
+        const {
+          ward,
+          district,
+          region
+        } = req.body;
+        // console.log(output_TransactionID)
+
+        dbSchema.payment
+          .create({
+            ward: ward,
+            district: district,
+            region: region
+          })
+          .then((results) => {
+            // console.log(results);
+            res.status(201).json(results);
+          })
+          .catch((err) => {
+            console.log(err);
+          });
+      })
+      .catch((err) => {
+        res.status(500).json({ msg: "Internal server Error" });
+      });
+  }
+});
+
 //get the count location
 location.get("/location/get-home-count", (req, res) => {
   dbSchema.sqlize

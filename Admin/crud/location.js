@@ -12,7 +12,7 @@ location.get("/location/get-list", (req, res) => {
     .query(
       "SELECT * FROM locations"
     )
-    .then((result) => {
+    .then((result,metadata) => {
       console.log(result);
       res.status(200).json(result);
     })

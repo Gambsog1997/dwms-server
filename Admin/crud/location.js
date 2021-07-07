@@ -52,7 +52,7 @@ location.get("/location/get-count", (req, res) => {
 });
 
 //create-payment endpoint
-app.post("/location/create", (req, res) => {
+location.post("/location/create", (req, res) => {
   if (!req.body) {
     throw new Error("bad request");
   } else {

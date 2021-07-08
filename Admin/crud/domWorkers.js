@@ -95,6 +95,7 @@ getDomWorkers.get("/domestic-workers/all-workers", (req, res) => {
 //updating the table
 getDomWorkers.put(`/domestic-workers/update`, (req, res) => {
   const { location } = req.body;
+  console.log(req.body)
   dbSchema.domWorker
     .update(
       {
